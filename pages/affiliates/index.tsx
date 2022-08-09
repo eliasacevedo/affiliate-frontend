@@ -1,20 +1,20 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
-import BasePage from '../components/basePage'
+import BasePage from '../../components/basePage'
 
-const Home: NextPage = () => {
+const AffiliatePage: NextPage = () => {
   return (
     <div>
       <Head>
-        <title>Affiliates App</title>
+        <title>Afiliados | Afiliados APP</title>
         <meta name="description" content="App for managed affiliates in social security system" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <BasePage>
-        <h1> Bienvenido a la Aplicacion de afiliados </h1>
+        <h1> Mantenimiento para los afiliados </h1>
       </BasePage>
     </div>
   )
 }
 
-export default Home
+export default AffiliatePage

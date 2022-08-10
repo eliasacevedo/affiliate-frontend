@@ -8,7 +8,7 @@ function BasePage({children}: BasePageProps) {
     return (
         <div className="flex min-h-screen">
             <Navigation />
-            <main className="h-full w-full">
+            <main className="h-full w-full p-5">
                 {children}
             </main> 
         </div>

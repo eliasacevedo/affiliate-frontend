@@ -1,12 +1,17 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-// import {QueryClient, QueryClientProvider} from 'react-query'
+import { useState } from 'react'
+import {ModalContext, ModalContextInterface, defaultValue} from '../contexts/modalContext'
+import ModalBase from '../components/modal/modalBase'
+
 function MyApp({ Component, pageProps }: AppProps) {
-  // const queryClient = new QueryClient()
+  const modalContextState = useState<ModalContextInterface>(defaultValue)
+
   return (
-    // <QueryClientProvider client={queryClient}>
+    <ModalContext.Provider value={modalContextState}>
       <Component {...pageProps} />
-    // </QueryClientProvider>
+      <ModalBase  />
+    </ModalContext.Provider>
   )
 }
 

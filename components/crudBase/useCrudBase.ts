@@ -1,10 +1,10 @@
-import { Dispatch, SetStateAction, useState } from "react"
+import React, { Dispatch, SetStateAction, useState } from "react"
 import BaseQuery, { BaseQueryResult } from "../../services/baseQuery/baseQuery"
 import { convertObjectInURLParamsString } from "../../utility/url"
 
 export interface Element{
     id: string,
-    [key: string]: any 
+    [key: string]: React.ReactNode
 }
 
 export interface CrudPath {
@@ -14,36 +14,36 @@ export interface CrudPath {
     get: string,
 }
 
-export interface UseCrudBaseProps{
+export interface UseCrudBaseProps<T>{
     paths: CrudPath,
     refresh?: boolean,
     initialSync?: boolean,
-    initialFilter?: Element,
-    initialState?: Element[],
+    initialFilter?: T,
+    initialState?: T[],
 }
 
-export interface CrudBaseResult {
-    Elements: Element[],
-    CreateElement(element: Element): Promise<BaseQueryResult>,
-    DeleteElement(id: string): Promise<BaseQueryResult>,
-    UpdateElement(element: Element): Promise<BaseQueryResult>,
-    RefreshElements(filter?: Element): Promise<void>
+export interface CrudBaseResult<T> {
+    Elements: T[],
+    CreateElement(element: T): Promise<BaseQueryResult<T>>,
+    DeleteElement(id: string): Promise<BaseQueryResult<T>>,
+    UpdateElement(element: T): Promise<BaseQueryResult<T>>,
+    RefreshElements(filter?: T): Promise<void>
 }
 
-function refreshElements(path: CrudPath, setState: Dispatch<SetStateAction<Element[]>>) {
-    return async (element?: Element) => {
+function refreshElements<T>(path: CrudPath, setState: Dispatch<SetStateAction<T[]>>) {
+    return async (element?: T) => {
         const result = await GetElements(path)(element)
         if (!result.success) { 
             // show notification
             return
         }
 
-        setState(result.data)
+        setState(result.data as T[])
     }
 }
 
-function CreateElement(path: CrudPath, setState: Dispatch<SetStateAction<Element[]>>, refresh: boolean){
-    return async (element: Element) => {
+function CreateElement<T>(path: CrudPath, setState: Dispatch<SetStateAction<T[]>>, refresh: boolean){
+    return async (element: T) => {
         const props = {
             path: path.create,
             init: { 
@@ -52,7 +52,7 @@ function CreateElement(path: CrudPath, setState: Dispatch<SetStateAction<Element
             }
         }
     
-        const result = await BaseQuery(props)
+        const result = await BaseQuery<T>(props)
         if (!result.success) { // show notification
             return result
         }
@@ -65,7 +65,7 @@ function CreateElement(path: CrudPath, setState: Dispatch<SetStateAction<Element
     }
 }
 
-function DeleteElement(path: CrudPath, setState: Dispatch<SetStateAction<Element[]>>, refresh: boolean) {
+function DeleteElement<T>(path: CrudPath, setState: Dispatch<SetStateAction<T[]>>, refresh: boolean) {
     return async (id: string) => {
         const props = {
             path: `${path.delete}?id=${id}`,
@@ -74,7 +74,7 @@ function DeleteElement(path: CrudPath, setState: Dispatch<SetStateAction<Element
             }
         }
     
-        const result = await BaseQuery(props)
+        const result = await BaseQuery<T>(props)
 
         if (!result.success) { // show notification
             return result
@@ -88,8 +88,8 @@ function DeleteElement(path: CrudPath, setState: Dispatch<SetStateAction<Element
     }
 }
 
-function UpdateElement(path: CrudPath, setState: Dispatch<SetStateAction<Element[]>>, refresh: boolean) {
-    return async (element: Element) => {
+function UpdateElement<T>(path: CrudPath, setState: Dispatch<SetStateAction<T[]>>, refresh: boolean) {
+    return async (element: T) => {
         const props = {
             path: path.update,
             init: { 
@@ -98,7 +98,7 @@ function UpdateElement(path: CrudPath, setState: Dispatch<SetStateAction<Element
             }
         }
     
-        const result = await BaseQuery(props)
+        const result = await BaseQuery<T>(props)
 
         if (!result.success) { // show notification
             return result
@@ -111,8 +111,8 @@ function UpdateElement(path: CrudPath, setState: Dispatch<SetStateAction<Element
     }
 }
 
-function GetElements(path: CrudPath) {
-    return async(element?: Element) => {
+function GetElements<T>(path: CrudPath) {
+    return async(element?: T) => {
         const props = {
             path: `${path.get}${convertObjectInURLParamsString(element)}`,
         }
@@ -126,7 +126,7 @@ function GetElements(path: CrudPath) {
     }
 }
 
-function useCrudBase({paths, refresh = true, initialSync = true, initialFilter = {id: ""}, initialState = []}: UseCrudBaseProps ): CrudBaseResult {
+function useCrudBase<T>({paths, refresh = true, initialSync = true, initialFilter, initialState = []}: UseCrudBaseProps<T> ): CrudBaseResult<T> {
     const state = useState(initialState)
     const refreshFunction = refreshElements(paths, state[1])
 
@@ -136,9 +136,9 @@ function useCrudBase({paths, refresh = true, initialSync = true, initialFilter =
 
     return {
         Elements: state[0],
-        CreateElement: CreateElement(paths, state[1], refresh),
-        DeleteElement: DeleteElement(paths, state[1], refresh),
-        UpdateElement: UpdateElement(paths, state[1], refresh),
+        CreateElement: CreateElement<T>(paths, state[1], refresh),
+        DeleteElement: DeleteElement<T>(paths, state[1], refresh),
+        UpdateElement: UpdateElement<T>(paths, state[1], refresh),
         RefreshElements: refreshFunction
     }
 }

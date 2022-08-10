@@ -3,20 +3,20 @@ import Head from 'next/head'
 import { useContext } from 'react'
 import BasePage from '../../components/basePage'
 import CrudBase, { CrudBaseProps } from '../../components/crudBase/crudBase'
+import AffiliateForm from '../../components/form/affiliate/AffiliateForm'
 import { ModalContext } from '../../contexts/modalContext'
-
-
+import { Affiliate, getDefaultValue } from '../../core/affiliate'
 
 const AffiliatePage: NextPage = () => {  
   const [modalInfo, setModalInfo] = useContext(ModalContext)
-  const crudProps: CrudBaseProps = {
+  const crudProps: CrudBaseProps<Affiliate> = {
     headerProps: {
       name: "Afiliados",
-      onCreate: () => {
-        setModalInfo({
-          children: <>Testing</>,
+      onCreate: (context) => {
+        setModalInfo(() => {return {
+          children: <AffiliateForm context={context}  />,
           visible: true
-        })
+        }})
       }
     },
     hookProps: {
@@ -27,13 +27,9 @@ const AffiliatePage: NextPage = () => {
         update: ""
       },
       initialState: [
-        {
-          id: "1",
-          firstname: "test",
-          lastname: "ing",
-        }
+        getDefaultValue()
       ],
-      initialSync: false
+      initialSync: false,
       
     }, 
     tableProps: {
@@ -42,26 +38,36 @@ const AffiliatePage: NextPage = () => {
         {
           id: "edit",
           children: <button className="btn mr-1">E</button>,
-          onClick: (e) => {
-            console.log(e)
+          onClick: (e, crud) => {
+            setModalInfo(() => { return {
+              children: <AffiliateForm context={crud} initValue={e} />,
+              visible: true
+            }})
           }
         },
         {
           id: "delete",
           children: <button className="btn bg-red-700 hover:bg-red-800">B</button>,
-          onClick: (e) => {
-            console.log(e)
+          onClick: (e, crud) => {
+            console.log(e, crud)
           }
         }
       ],
       schema: {
-        id: "Identificador",
+        id: "ID",
         firstname: "Nombre",
         lastname: "Apellido",
+        birthDate: "Fecha nacimiento",
+        consumedAmount: "Monto consumido",
+        identificationId: "Cedula",
+        phoneNumber: "Telefono",
+        registryDate: "Fecha registro",
+        sex: "Sexo",
+        socialSecurity: "Seguridad social"
       }
     }
   } 
-
+  
   return (
     <div>
       <Head>
@@ -70,7 +76,7 @@ const AffiliatePage: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <BasePage>
-        <CrudBase {...crudProps} />
+        <CrudBase {...crudProps}/>
       </BasePage>
     </div>
   )

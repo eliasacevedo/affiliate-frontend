@@ -4,8 +4,8 @@ export interface BaseQueryProps {
     init?: RequestInit
 }
 
-export interface BaseQueryResult {
-    data: any,
+export interface BaseQueryResult<T> {
+    data: T,
     success: boolean,
     message?: string,
     code: number
@@ -31,12 +31,12 @@ function addDefaultInitRequest(init?: RequestInit): RequestInit {
     return result
 }
 
-async function generateQueryResult(response: Response): Promise<BaseQueryResult> {
+async function generateQueryResult<T>(response: Response): Promise<BaseQueryResult<T>> {
     if (!response.ok) {
         return {
             code: response.status,
             success: response.ok,
-            data: null,
+            data: null as unknown as T,
             message: "Problemas de conexion, reintentar nuevamente"
         }
     } 
@@ -44,7 +44,7 @@ async function generateQueryResult(response: Response): Promise<BaseQueryResult>
     return await response.json()
 }
 
-async function BaseQuery({path, init}: BaseQueryProps): Promise<BaseQueryResult> {
+async function BaseQuery<T>({path, init}: BaseQueryProps): Promise<BaseQueryResult<T>> {
     const defaultInit = addDefaultInitRequest(init)
     const result = await fetch(path, defaultInit)
     return await generateQueryResult(result)

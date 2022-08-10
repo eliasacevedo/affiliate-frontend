@@ -26,7 +26,7 @@ const navigationLinks: NavigationLinks[] = [
 
 function Navigation() {
     return (
-        <div className="max-w-sm bg-cyan-800 text-white p-5">
+        <div className="w-1/5 bg-cyan-800 text-white p-5 max-w-xs">
             <div className="nav--brand mb-10 font-bold text-3xl">
                 <h1>Affiliates App</h1>
             </div>

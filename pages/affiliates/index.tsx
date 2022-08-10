@@ -4,11 +4,12 @@ import { useContext } from 'react'
 import BasePage from '../../components/basePage'
 import CrudBase, { CrudBaseProps } from '../../components/crudBase/crudBase'
 import AffiliateForm from '../../components/form/affiliate/AffiliateForm'
+import ConsumedAmountForm from '../../components/form/affiliate/ConsumedAmountForm'
 import { ModalContext } from '../../contexts/modalContext'
 import { Affiliate, getDefaultValue } from '../../core/affiliate'
 
 const AffiliatePage: NextPage = () => {  
-  const [modalInfo, setModalInfo] = useContext(ModalContext)
+  const [_, setModalInfo] = useContext(ModalContext)
   const crudProps: CrudBaseProps<Affiliate> = {
     headerProps: {
       name: "Afiliados",
@@ -35,6 +36,16 @@ const AffiliatePage: NextPage = () => {
     tableProps: {
       elements: [],
       options: [
+        {
+          id: "addAmount",
+          children: <button className="btn mr-1">+</button>,
+          onClick: (affiliate) => {
+            setModalInfo(() => { return {
+              children: <ConsumedAmountForm initValue={affiliate} />,
+              visible: true
+            }})
+          }
+        },
         {
           id: "edit",
           children: <button className="btn mr-1">E</button>,

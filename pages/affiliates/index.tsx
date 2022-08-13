@@ -7,6 +7,7 @@ import AffiliateForm from '../../components/form/affiliate/AffiliateForm'
 import ConsumedAmountForm from '../../components/form/affiliate/ConsumedAmountForm'
 import { ModalContext } from '../../contexts/modalContext'
 import { Affiliate, getDefaultValue } from '../../core/affiliate'
+import { AFFILIATE_ADD_PATH, AFFILIATE_GET_PATH, AFFILIATE_UPDATE_PATH } from '../../services/api/paths'
 
 const AffiliatePage: NextPage = () => {  
   const [_, setModalInfo] = useContext(ModalContext)
@@ -22,10 +23,10 @@ const AffiliatePage: NextPage = () => {
     },
     hookProps: {
       paths: {
-        create: "",
+        create: AFFILIATE_ADD_PATH,
         delete: "",
-        get: "",
-        update: ""
+        get: AFFILIATE_GET_PATH,
+        update: AFFILIATE_UPDATE_PATH
       },
       initialState: [
         getDefaultValue()

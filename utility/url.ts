@@ -8,14 +8,21 @@ export function convertObjectInURLParamsString(object?: Object): string {
         return ""
     }
 
-    let addedValue = "?"
+    let result = "?"
 
     const values = Object.values(object)
+    let parametersAdded = 0
+    Object.keys(object).forEach((key, i, arr) => {
+        const value = values[i]
+        if (value == null || value == undefined || value == "") {
+            return
+        }
 
-    const result = Object.keys(object).reduce((pv, cv, i, arr) => {
-        addedValue += `${addedValue}=${values[i]}`
-        return addedValue
+        const prefix = parametersAdded > 0 ? "&":""
+        result += `${prefix}${key}=${value}`
+        parametersAdded++
     })
+
     console.log(result)
     return result
 

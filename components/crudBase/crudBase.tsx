@@ -16,8 +16,8 @@ function CrudBase<T extends Element>({ hookProps, tableProps, headerProps, searc
     return (
         <CrudContext.Provider value={crud}>
             <div className="h-full">
-                <SearchBase { ...searchProps } />
                 <HeaderBase {...headerProps} />
+                <SearchBase { ...searchProps } />
                 <TableBase {...tableProps} elements={crud.Elements} />
             </div>
         </CrudContext.Provider> 

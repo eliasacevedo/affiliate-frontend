@@ -11,10 +11,19 @@ function AffiliateSearchForm() {
     return (
         <div className="affiliate-search-form">
             <BaseForm onSubmit={utility.onSubmit}>
-                <InputBase id="firstname" name="Nombre" />
-                <InputBase id="lastname" name="Apellido" />
-                <InputBase id="identificationId" name="Cedula" />
-                <button type="submit" className="btn">Buscar</button>
+                <div className="flex items-center">
+                    <div className="mr-2">
+                        <InputBase id="firstname" name="Nombre" />
+                    </div>
+                    <div className="mr-2">
+                        <InputBase id="lastname" name="Apellido" />
+                    </div>
+                    <div className="mr-2">
+                        <InputBase id="identificationId" name="Cedula" />
+                    </div>
+
+                    <button type="submit" className="btn mt-5">Buscar</button>
+                </div>
             </BaseForm>
         </div>
     )

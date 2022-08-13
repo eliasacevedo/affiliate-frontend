@@ -9,6 +9,7 @@ import AffiliateSearchForm from '../../components/form/affiliate/AffiliateSearch
 import { ModalContext } from '../../contexts/modalContext'
 import { Affiliate, getDefaultValue } from '../../core/affiliate'
 import { AFFILIATE_ADD_PATH, AFFILIATE_GET_PATH, AFFILIATE_UPDATE_PATH } from '../../services/api/paths'
+import { affiliateToAffiliateForm } from '../../components/form/affiliate/useAffiliateForm'
 
 const AffiliatePage: NextPage = () => {  
   const [_, setModalInfo] = useContext(ModalContext)
@@ -29,11 +30,8 @@ const AffiliatePage: NextPage = () => {
         get: AFFILIATE_GET_PATH,
         update: AFFILIATE_UPDATE_PATH
       },
-      initialState: [
-        getDefaultValue()
-      ],
+      initialState: [],
       initialSync: false,
-      
     }, 
     tableProps: {
       elements: [],
@@ -41,9 +39,9 @@ const AffiliatePage: NextPage = () => {
         {
           id: "addAmount",
           children: <button className="btn mr-1">+</button>,
-          onClick: (affiliate) => {
+          onClick: (affiliate, context) => {
             setModalInfo(() => { return {
-              children: <ConsumedAmountForm initValue={affiliate} />,
+              children: <ConsumedAmountForm initValue={affiliate} context={context}/>,
               visible: true
             }})
           }
@@ -53,18 +51,11 @@ const AffiliatePage: NextPage = () => {
           children: <button className="btn mr-1">E</button>,
           onClick: (e, crud) => {
             setModalInfo(() => { return {
-              children: <AffiliateForm context={crud} initValue={e} />,
+              children: <AffiliateForm context={crud} initValue={affiliateToAffiliateForm(e)} />,
               visible: true
             }})
           }
         },
-        {
-          id: "delete",
-          children: <button className="btn bg-red-700 hover:bg-red-800">B</button>,
-          onClick: (e, crud) => {
-            console.log(e, crud)
-          }
-        }
       ],
       schema: {
         id: "ID",
@@ -76,7 +67,9 @@ const AffiliatePage: NextPage = () => {
         phoneNumber: "Telefono",
         registryDate: "Fecha registro",
         sex: "Sexo",
-        socialSecurity: "Seguridad social"
+        socialSecurity: "Seguridad social",
+        planId: "Plan",
+        statusId: "Estado"
       }
     },
     searchProps: {

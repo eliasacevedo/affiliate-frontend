@@ -8,7 +8,9 @@ export interface Affiliate extends Element {
     phoneNumber: string
     socialSecurity: string
     registryDate: string
-    consumedAmount: number
+    consumedAmount: number,
+    planId: string,
+    statusId: string
 }
 
 export const getDefaultValue = () => {
@@ -23,5 +25,7 @@ export const getDefaultValue = () => {
         socialSecurity: "",
         registryDate: "",
         consumedAmount: 0,
+        planId: "",
+        statusId: ""
     } as Affiliate
 }

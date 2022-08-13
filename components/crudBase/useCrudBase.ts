@@ -131,6 +131,7 @@ function useCrudBase<T>({paths, refresh = true, initialSync = true, initialFilte
     const refreshFunction = refreshElements(paths, state[1])
 
     if (initialSync) {
+        initialSync = false
         refreshFunction(initialFilter)
     }
 

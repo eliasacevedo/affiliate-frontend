@@ -1,24 +1,27 @@
 import BaseForm from "../base/FormBase"
 import InputBase from "../base/InputBase"
-import { CrudBaseResult } from "../../crudBase/useCrudBase";
 import useConsumedAmountForm from "./useConsumedAmountForm";
 import { Affiliate } from "../../../core/affiliate";
+import { useContext } from "react";
+import { CrudBaseResult } from "../../crudBase/useCrudBase";
+import { ModalContext } from "../../../contexts/modalContext";
 
 export interface ConsumedAmountFormProps {
+    context: CrudBaseResult<Affiliate>
     initValue: Affiliate,
 }
 
-function ConsumedAmountForm({initValue}: ConsumedAmountFormProps) {
-    const { onSubmit, getDefaultValue } = useConsumedAmountForm({})
-    console.log(initValue)
+function ConsumedAmountForm({initValue, context}: ConsumedAmountFormProps) {
+    const [_, setModalInfo] = useContext(ModalContext)
+    const { onSubmit, getDefaultValue } = useConsumedAmountForm({context, setModalInfo})
     return (
         <>
             <h1 className="mb-5 font-bold text-2xl">Agregar monto a {initValue.firstname} {initValue.lastname}</h1>
             <BaseForm onSubmit={onSubmit} defaultValues={getDefaultValue(initValue)}>
                 <div className="max-w-xs">
-                    <InputBase id="id" name="Id" show={false} />
+                    <InputBase id="UserId" name="Id" show={false} />
                     <p className="mb-3">Monto consumido: {initValue.consumedAmount}</p>
-                    <InputBase id="amount" type="number" name="Monto a agregar" />
+                    <InputBase id="ConsumedAmount" type="number" name="Monto a agregar" />
                     <button className="btn" type="submit">Agregar</button>
                 </div>
             </BaseForm>

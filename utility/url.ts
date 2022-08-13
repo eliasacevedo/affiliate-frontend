@@ -8,17 +8,15 @@ export function convertObjectInURLParamsString(object?: Object): string {
         return ""
     }
 
-    return Object.keys(object).reduce((pv, cv, i) => {
-        let addedValue = ""
+    let addedValue = "?"
 
-        if (i == 0) {
-            addedValue += "?"
-        } else {
-            addedValue += "&"
-        }
+    const values = Object.values(object)
 
-        addedValue += `${pv}${addedValue}=${cv}`
+    const result = Object.keys(object).reduce((pv, cv, i, arr) => {
+        addedValue += `${addedValue}=${values[i]}`
         return addedValue
     })
+    console.log(result)
+    return result
 
 }

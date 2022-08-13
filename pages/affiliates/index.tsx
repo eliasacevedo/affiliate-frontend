@@ -5,6 +5,7 @@ import BasePage from '../../components/basePage'
 import CrudBase, { CrudBaseProps } from '../../components/crudBase/crudBase'
 import AffiliateForm from '../../components/form/affiliate/AffiliateForm'
 import ConsumedAmountForm from '../../components/form/affiliate/ConsumedAmountForm'
+import AffiliateSearchForm from '../../components/form/affiliate/AffiliateSearchForm'
 import { ModalContext } from '../../contexts/modalContext'
 import { Affiliate, getDefaultValue } from '../../core/affiliate'
 
@@ -76,6 +77,9 @@ const AffiliatePage: NextPage = () => {
         sex: "Sexo",
         socialSecurity: "Seguridad social"
       }
+    },
+    searchProps: {
+      children: <AffiliateSearchForm />
     }
   } 
   

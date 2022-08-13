@@ -23,7 +23,6 @@ export function convertObjectInURLParamsString(object?: Object): string {
         parametersAdded++
     })
 
-    console.log(result)
     return result
 
 }

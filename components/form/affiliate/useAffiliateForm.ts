@@ -62,9 +62,7 @@ export function affiliateToAffiliateForm(element: Affiliate) {
 
 
 function useAffiliateForm({context, setModalInfo}: UseAffiliateFormProps<Affiliate>) {
-
     const onSubmit = async (form: UseFormReturn<AffiliateForm, any>, element: AffiliateForm) => {
-        console.log(element)
         if (element.id) {
             await context.UpdateElement(affiliateFormToAffiliate(element))
         } else {
